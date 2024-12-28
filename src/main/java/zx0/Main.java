@@ -191,9 +191,21 @@ public class Main {
             reverse(output);
         }
 
+        byte header[]=new byte[14];
+        header[0]='Z';header[1]='X';header[2]='0';header[3]='!';
+        int temp=output.length;
+        header[4]=(byte)((temp>>24)&0xff);header[5]=(byte)((temp>>16)&0xff);header[6]=(byte)((temp>>8)&0xff);header[7]=(byte)(temp&0xff);
+        temp=input.length;
+        header[8]=(byte)((temp>>24)&0xff);header[9]=(byte)((temp>>16)&0xff);header[10]=(byte)((temp>>8)&0xff);header[11]=(byte)(temp&0xff);
+        header[12]=(byte)((delta[0]>>8)&0xff);
+        header[13]=(byte)(delta[0]&0xff);
+        byte output2[]=new byte[14+output.length];
+        System.arraycopy(header,0,output2,0,14);
+        System.arraycopy(output,0,output2,14,output.length);
+
         // write output file
         try {
-            Files.write(Paths.get(outputName), output, CREATE, forcedMode ? TRUNCATE_EXISTING : CREATE_NEW);
+            Files.write(Paths.get(outputName), output2, CREATE, forcedMode ? TRUNCATE_EXISTING : CREATE_NEW);
         } catch (Exception e) {
             System.err.println("Error: Cannot write output file " + outputName);
             System.exit(1);

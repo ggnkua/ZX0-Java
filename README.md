@@ -1,3 +1,21 @@
+## Additions to this fork
+
+This fork of ZX0-Java adds a header at the start of the packed file, so a program
+trying to depack the files does not need external information (such as
+original file size or delta value). All values are in big endian format and
+the header is as follows:
+
+|offset|size|description|
+|:---: |:--:|:--:       |
+|0     |4   |Magic value of 0x5a583021 or `ZX0!`|
+|4     |4   |packed size|
+|8     |4   |unpacked size|
+|12    |2   |delta      |
+
+To build, download Java SDK and put it on your PATH.
+Then download [Maven](https://maven.apache.org/download.cgi) (also put it in your PATH) and run `mvn verify` in the base folder.
+Finally, to create the "exe" version (still needs the Java SDK) download [install4j](https://sourceforge.net/projects/launch4j/) and load the `launch4j` from the root of this repo. Adjust the output file. Optionally add the Java SDK bin path to the "Bundled JRE path" in the "JRE" tab. Press the gear icon and it should do the trick.
+
 # ZX0-Java
 
 **ZX0-Java** is a multi-thread implementation of the
